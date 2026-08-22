@@ -118,6 +118,14 @@ Only create documents when they contain useful information.
 
 Do not create empty process artifacts.
 
+## Build journal
+
+Maintain the local, uncommitted build journal at `docs/BUILD_JOURNAL.md`. It is source material for a future public account of building Sakka, not canonical project documentation.
+
+After every meaningful task, experiment, or decision, assess whether it produced a reusable learning, a meaningful surprise, or a rationale worth preserving. If so, add a concise journal entry and tell the engineer that it was added.
+
+Do not record routine mechanics, duplicate the PRD or ADRs, or include credentials or other sensitive operational information.
+
 ---
 
 # Current product decisions

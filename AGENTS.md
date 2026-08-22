@@ -154,6 +154,10 @@ The product should eventually expose an authenticated `/admin` interface where a
 * save drafts
 * publish content
 
+The MVP editor is source-first: original file source is authoritative, Markdown bodies are edited as source, and MDX bodies are opaque source. Do not introduce a rich-text/AST serializer or generic YAML serialization without a new fidelity decision.
+
+Structured frontmatter controls may patch only explicitly supported, existing scalar values by source range. They must leave all untouched frontmatter and body bytes unchanged. Unsupported, missing, non-scalar, malformed, or ambiguous frontmatter must fall back to source editing.
+
 ## Publishing
 
 The initial publishing model should integrate with GitHub.

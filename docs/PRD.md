@@ -401,40 +401,33 @@ This may include:
 
 ## 8.6 Content editing
 
-**Status: REQUIRED**
+**Status: DECIDED for MVP editing model**
 
-An author should be able to edit existing Markdown content.
+The MVP uses source-first editing: the original repository source is authoritative, and Markdown bodies are edited and saved as source text.
 
-For MDX, Sakka must not silently corrupt constructs it cannot represent.
+MDX bodies are opaque source in the MVP. Sakka must not claim general MDX body editing or silently transform constructs it cannot represent.
 
-Content fidelity is a correctness requirement.
+Content fidelity is a correctness requirement. A structured edit must change only its intended source range; all untouched frontmatter and body source must remain byte-for-byte unchanged.
 
 ---
 
 ## 8.7 Editor
 
-**Status: REQUIRED, technology OPEN**
+**Status: DECIDED source-first model; technology OPEN**
 
-The authoring experience should provide a friendly editor.
+The authoring experience should provide a source editor and Sakka-owned Markdown preview.
 
-Potential modes include:
-
-* rich text
-* Markdown source
-* split view
-* preview
-
-The editor architecture must be evaluated separately from the product requirement.
+The editor component/library, split-view UX, syntax highlighting, and other presentation details remain open. The editor must not introduce a rich-text or AST serialization path without a new content-fidelity decision.
 
 ---
 
 ## 8.8 Frontmatter / metadata
 
-**Status: REQUIRED**
+**Status: DECIDED constrained MVP behavior**
 
 Authors should be able to edit configured metadata fields.
 
-Examples:
+Potential configured fields include:
 
 ```yaml
 title:
@@ -445,7 +438,7 @@ author:
 draft:
 ```
 
-Sakka should not assume every site has the same schema.
+Sakka should not assume every site has the same schema. In the MVP, structured controls may update only explicitly supported, existing scalar values by targeted source-range patch. Arrays such as `tags`, nested objects, unknown keys, comments, aliases, malformed YAML, and unsupported values must remain source-edited rather than generically serialized.
 
 ---
 
@@ -635,6 +628,8 @@ Invalid outcome:
 
 This requirement should heavily influence editor and AST architecture.
 
+For the MVP, [ADR 0003](architecture/adr/0003-source-first-content-fidelity.md) selects source-first editing. It preserves original source, allows only narrow source-range patches for supported existing scalar frontmatter fields, and treats MDX bodies as opaque source.
+
 ---
 
 # 10. Architecture principles
@@ -699,7 +694,8 @@ This is more valuable than independently completing large subsystems without an 
 * use a dedicated test branch until the workflow is proven; do not mutate production content during early investigation
 * one configured content directory
 * Markdown support
-* simple frontmatter
+* source-first Markdown editing
+* constrained, source-range frontmatter scalar updates
 * authenticated admin for the repository owner only
 * list existing articles
 * edit existing article
@@ -712,7 +708,7 @@ This is more valuable than independently completing large subsystems without an 
 
 ## Possible MVP exclusions
 
-* full MDX editing
+* general MDX body editing
 * arbitrary framework support
 * site-rendered and deployment preview infrastructure
 * external asset providers
@@ -791,7 +787,7 @@ Test files containing:
 * custom directives
 * frontmatter
 
-Determine what Sakka can safely edit.
+Outcome: source-first body preservation is selected in [ADR 0003](architecture/adr/0003-source-first-content-fidelity.md). General MDX body editing remains out of scope.
 
 ---
 
@@ -1049,6 +1045,7 @@ Directories should be created only when needed.
 * standalone Next.js application on Vercel Node for the dogfood MVP
 * Neon Postgres for durable server-side auth/session state
 * zero-cost personal/non-commercial MVP deployment constraint
+* source-first content editing with narrow scalar frontmatter patches
 * Git revision history
 * dogfood on Aslam Bhai
 * content fidelity as a first-class requirement
@@ -1064,7 +1061,7 @@ Directories should be created only when needed.
 
 ## OPEN
 
-* editor library
+* editor component/library and source-editor UX
 * MDX AST strategy
 * application session and token-retention implementation
 * draft branch semantics

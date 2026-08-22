@@ -298,6 +298,12 @@ When implementation begins:
 * Avoid tests coupled to implementation trivia.
 * Prefer incremental PRs.
 
+## Git workflow
+
+Sakka currently has a single developer. Unless the engineer explicitly requests a branch or pull request, commit and push completed work directly to `main`.
+
+Revisit this workflow when additional contributors begin working on the repository.
+
 ---
 
 # Definition of a useful increment

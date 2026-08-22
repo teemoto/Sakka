@@ -68,6 +68,17 @@ The resulting token lifetime was eight hours. GitHub also returned a refresh tok
 - The callback response used `Cache-Control: no-store`.
 - The server checked the GitHub user, their accessible App installation, and the configured repository instead of trusting browser-supplied repository or installation identifiers.
 
+## Negative state-guard checks
+
+A separate local guard test exercised the callback decision rules before any code exchange. It verified that the callback rejects:
+
+- a missing `state` value;
+- a mismatched `state` value;
+- an expired `state` value; and
+- a reused `state` value after a valid callback has been accepted.
+
+This is controlled local evidence for the guard logic, not a substitute for browser-level adversarial testing in the selected production runtime.
+
 ## What this supports
 
 - The web authorization-code flow is technically viable for Sakka's eventual browser `/admin` experience.
@@ -76,7 +87,7 @@ The resulting token lifetime was eight hours. GitHub also returned a refresh tok
 
 ## What remains unproven
 
-- Adversarial tests for missing, mismatched, expired, and reused state values.
+- Browser-level adversarial tests for callback parameters in the selected production runtime.
 - Production session design, cookie settings, CSRF protection on later write requests, logout, and user-token revocation.
 - Production secret storage, rotation, and deletion of no-longer-needed App client secrets.
 - Refresh-token encryption, rotation, and revocation policy.
@@ -85,10 +96,9 @@ The resulting token lifetime was eight hours. GitHub also returned a refresh tok
 
 ## Cleanup note
 
-The App now has client secret material created for this local experiment. After we decide whether another local authorization-code-flow test is needed, revoke unused client secrets from the GitHub App settings. Never commit or paste a client secret into chat.
+All temporary App client secrets created for this local experiment were revoked from the GitHub App settings after the test. Never commit or paste a client secret into chat.
 
 ## References
 
 - [Generating a user access token for a GitHub App](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
 - [About the user authorization callback URL](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/about-the-user-authorization-callback-url)
-

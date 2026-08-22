@@ -168,6 +168,14 @@ GitHub App installation tokens are not the normal authoring credential because t
 
 Sakka must preserve the initiating author for every publishing action. GitHub App user tokens are the chosen MVP mechanism, including for the owner-only dogfood slice. Once collaborators are supported, retain Git-visible commit metadata and pull-request context that identify the individual author; any additional attribution requirements should be recorded in a future ADR.
 
+## Application runtime
+
+The MVP is a standalone Next.js TypeScript application deployed on Vercel's Node.js runtime. It is separate from the sites Sakka manages.
+
+Neon Postgres is the MVP's durable server-side store for opaque sessions, OAuth state, encrypted refresh tokens when retained, and minimal operation/audit metadata. It must not become a source of truth for site content; Git remains authoritative.
+
+Use Vercel Hobby and Neon Free only for personal, non-commercial dogfooding within their current limits. Do not create paid plans, add a payment method, or provision production services unless the engineer explicitly approves it.
+
 ## Version history
 
 Sakka should leverage Git history rather than introduce a proprietary revision system unless a strong future requirement justifies one.
@@ -188,10 +196,9 @@ These require investigation and, where appropriate, an ADR.
 
 ## Application architecture
 
-* standalone application vs embedded application
-* server runtime requirements
-* deployment model
 * repository/package structure
+* session/token data model and encryption implementation
+* deployment operations, regions, and migration path beyond free tiers
 
 ## GitHub integration
 

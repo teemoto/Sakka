@@ -309,7 +309,7 @@ The exact draft branch model is still open.
 
 ## 8.1 Authentication
 
-**Status: DECIDED for MVP credential model; runtime and session implementation OPEN**
+**Status: DECIDED for MVP credential and runtime model; session implementation OPEN**
 
 The admin interface must require authentication.
 
@@ -317,7 +317,7 @@ For author-initiated repository reads, saves, and pull-request creation, the MVP
 
 The GitHub App installation must be limited to the configured repository. Before every mutation, Sakka must verify server-side that the authenticated GitHub user can access both the expected App installation and that repository.
 
-GitHub client secrets, authorization codes, access tokens, refresh tokens, and App private keys must remain outside the browser context and logs. The exact application runtime, session implementation, and token-retention strategy remain architectural decisions.
+The MVP application is a standalone Next.js TypeScript application on Vercel's Node.js runtime. It uses Neon Postgres for durable server-side session/authentication state, not for authoritative site content. GitHub client secrets, authorization codes, access tokens, refresh tokens, and App private keys must remain outside the browser context and logs. The exact session implementation and token-retention strategy remain architectural decisions.
 
 ---
 
@@ -827,17 +827,19 @@ Ensure Sakka detects the stale base.
 
 ---
 
-# 13. Open architecture questions
+# 13. Architecture decisions and open questions
 
-The following are intentionally unresolved.
+The following records the current architecture decisions alongside intentionally unresolved questions.
 
-## Runtime
+## MVP application runtime
 
-* Next.js?
-* standalone Node server?
-* framework-neutral core?
-* client/server split?
-* serverless?
+**Status: DECIDED for the dogfood MVP**
+
+Sakka will be a standalone Next.js TypeScript application deployed on Vercel's Node.js runtime, with Neon Postgres for durable server-side authentication/session state. It will not be embedded in the Aslam Bhai site and it will not use Postgres as a content store.
+
+The initial deployment must use only the current free tiers: Vercel Hobby, Neon Free, and a default `*.vercel.app` domain. Reassess this decision before commercial use or free-tier limits become a constraint.
+
+The session library, token encryption/retention policy, database schema, and deployment operations remain open.
 
 ## Repository structure
 
@@ -867,7 +869,7 @@ Must be threat-modeled before implementation.
 
 ## GitHub integration
 
-The MVP credential model is decided in [ADR 0001](architecture/adr/0001-github-credential-and-repository-access.md). Production runtime, secret delivery, refresh-token handling, and failure-recovery behavior still require design and implementation.
+The MVP credential model is decided in [ADR 0001](architecture/adr/0001-github-credential-and-repository-access.md). The MVP runtime/deployment model is decided in [ADR 0002](architecture/adr/0002-mvp-application-runtime-and-deployment.md). Session implementation, secret delivery, refresh-token handling, and failure-recovery behavior still require design and implementation.
 
 ## Preview system
 
@@ -1044,6 +1046,9 @@ Directories should be created only when needed.
 * pull-request publishing as initial model
 * individual author attribution for collaborative publishing
 * GitHub App user access tokens for author-initiated GitHub work
+* standalone Next.js application on Vercel Node for the dogfood MVP
+* Neon Postgres for durable server-side auth/session state
+* zero-cost personal/non-commercial MVP deployment constraint
 * Git revision history
 * dogfood on Aslam Bhai
 * content fidelity as a first-class requirement
@@ -1059,8 +1064,6 @@ Directories should be created only when needed.
 
 ## OPEN
 
-* application framework
-* runtime architecture
 * editor library
 * MDX AST strategy
 * application session and token-retention implementation

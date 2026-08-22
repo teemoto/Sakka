@@ -84,7 +84,7 @@ AI-assisted development guidelines live in:
 
 `AGENTS.md`
 
-Architecture decisions will be recorded as ADRs as they are made.
+Architecture decisions are recorded as ADRs in `docs/architecture/adr/`.
 
 ## License
 

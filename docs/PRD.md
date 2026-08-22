@@ -309,18 +309,15 @@ The exact draft branch model is still open.
 
 ## 8.1 Authentication
 
-**Status: DECIDED at product level, architecture OPEN**
+**Status: DECIDED for MVP credential model; runtime and session implementation OPEN**
 
 The admin interface must require authentication.
 
-The authentication design must eventually support secure repository access.
+For author-initiated repository reads, saves, and pull-request creation, the MVP will use GitHub App user access tokens obtained through GitHub's web authorization-code flow.
 
-Open architecture questions include:
+The GitHub App installation must be limited to the configured repository. Before every mutation, Sakka must verify server-side that the authenticated GitHub user can access both the expected App installation and that repository.
 
-* GitHub OAuth
-* GitHub App identity
-* independent Sakka identity
-* provider-specific authentication
+GitHub client secrets, authorization codes, access tokens, refresh tokens, and App private keys must remain outside the browser context and logs. The exact application runtime, session implementation, and token-retention strategy remain architectural decisions.
 
 ---
 
@@ -340,7 +337,7 @@ Sakka must be able to perform the Git operations necessary for:
 * creating pull requests
 * checking version state
 
-Sakka should request the smallest practical permission scope.
+Sakka should request the smallest practical permission scope. For the MVP GitHub App, this is metadata read, contents read/write, and pull requests read/write.
 
 ---
 
@@ -527,13 +524,11 @@ Direct-to-main publishing may be considered later as an optional configuration.
 
 ### Author attribution
 
-**Status: DECIDED product requirement, implementation OPEN**
+**Status: DECIDED for MVP credential model**
 
 Sakka must retain the initiating author for every publishing action.
 
-For the owner-only MVP, a shared GitHub App identity is acceptable when the repository owner is the only possible author. Once collaborator support is introduced, Git-visible commit metadata and pull-request context must identify the individual author; a shared bot identity alone is not sufficient.
-
-The exact mechanism—such as GitHub App user access tokens, commit author/committer metadata, or both—requires an ADR.
+Sakka will use GitHub App user access tokens for normal author-initiated writes. This produced Git-visible human attribution in the dogfood spike and is the chosen MVP path for future collaborator support. A GitHub App installation token may be used only for future server-initiated operations that do not represent an individual author.
 
 ---
 
@@ -754,11 +749,12 @@ create PR
 
 Questions:
 
-* GitHub App or OAuth?
-* permissions?
+* Can GitHub safely support the end-to-end write workflow?
 * rate limits?
 * token lifecycle?
 * private repositories?
+
+Outcome: the credential comparison was completed and [ADR 0001](architecture/adr/0001-github-credential-and-repository-access.md) selects GitHub App user access tokens for author-initiated work. Runtime, session, refresh-token, and production operations details remain open.
 
 ---
 
@@ -871,7 +867,7 @@ Must be threat-modeled before implementation.
 
 ## GitHub integration
 
-GitHub App vs OAuth requires investigation.
+The MVP credential model is decided in [ADR 0001](architecture/adr/0001-github-credential-and-repository-access.md). Production runtime, secret delivery, refresh-token handling, and failure-recovery behavior still require design and implementation.
 
 ## Preview system
 
@@ -1047,6 +1043,7 @@ Directories should be created only when needed.
 * create/edit/publish workflows
 * pull-request publishing as initial model
 * individual author attribution for collaborative publishing
+* GitHub App user access tokens for author-initiated GitHub work
 * Git revision history
 * dogfood on Aslam Bhai
 * content fidelity as a first-class requirement
@@ -1066,8 +1063,7 @@ Directories should be created only when needed.
 * runtime architecture
 * editor library
 * MDX AST strategy
-* authentication model
-* GitHub App vs OAuth
+* application session and token-retention implementation
 * draft branch semantics
 * preview architecture
 * conflict resolution UX

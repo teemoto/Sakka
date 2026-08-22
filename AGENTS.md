@@ -162,7 +162,11 @@ Pull requests are the preferred initial publishing workflow.
 
 The exact draft branch strategy remains an architectural decision.
 
-Sakka must preserve the initiating author for every publishing action. During the owner-only MVP, a shared GitHub App identity is acceptable when the author is unambiguous. Once collaborators are supported, Git-visible commit metadata and pull-request context must identify the individual author; the exact credential and attribution strategy remains an architectural decision.
+For author-initiated GitHub reads, saves, and pull requests, the MVP credential model is a GitHub App user access token obtained through the web authorization-code flow. The App installation must be restricted to the configured repository, and server-side authorization must verify the authenticated user's access to that installation and repository before mutation.
+
+GitHub App installation tokens are not the normal authoring credential because they produce bot attribution. They may be considered later only for server-initiated operations that do not represent an individual author. PATs are local-development comparison tooling, not a production authoring model.
+
+Sakka must preserve the initiating author for every publishing action. GitHub App user tokens are the chosen MVP mechanism, including for the owner-only dogfood slice. Once collaborators are supported, retain Git-visible commit metadata and pull-request context that identify the individual author; any additional attribution requirements should be recorded in a future ADR.
 
 ## Version history
 
@@ -191,17 +195,16 @@ These require investigation and, where appropriate, an ADR.
 
 ## GitHub integration
 
-* GitHub App
-* OAuth
-* PAT/token-based models
-* required permissions
-* repository installation flow
+* GitHub App registration and production installation flow
+* production secret delivery and credential rotation
+* refresh-token retention and revocation
+* rate-limit and failure-handling behavior
 
 ## Authentication and authorization
 
-* Sakka authentication model
-* identity relationship with GitHub
-* repository permissions
+* Sakka session lifecycle and CSRF implementation
+* token storage/encryption and logout/revocation behavior
+* repository authorization checks and configuration enforcement
 * author vs administrator roles
 
 ## Editor

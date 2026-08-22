@@ -525,6 +525,16 @@ deploy
 
 Direct-to-main publishing may be considered later as an optional configuration.
 
+### Author attribution
+
+**Status: DECIDED product requirement, implementation OPEN**
+
+Sakka must retain the initiating author for every publishing action.
+
+For the owner-only MVP, a shared GitHub App identity is acceptable when the repository owner is the only possible author. Once collaborator support is introduced, Git-visible commit metadata and pull-request context must identify the individual author; a shared bot identity alone is not sufficient.
+
+The exact mechanism—such as GitHub App user access tokens, commit author/committer metadata, or both—requires an ADR.
+
 ---
 
 ## 8.12 Editing published content
@@ -1036,6 +1046,7 @@ Directories should be created only when needed.
 * authenticated admin experience
 * create/edit/publish workflows
 * pull-request publishing as initial model
+* individual author attribution for collaborative publishing
 * Git revision history
 * dogfood on Aslam Bhai
 * content fidelity as a first-class requirement

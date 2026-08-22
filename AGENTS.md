@@ -162,6 +162,8 @@ Pull requests are the preferred initial publishing workflow.
 
 The exact draft branch strategy remains an architectural decision.
 
+Sakka must preserve the initiating author for every publishing action. During the owner-only MVP, a shared GitHub App identity is acceptable when the author is unambiguous. Once collaborators are supported, Git-visible commit metadata and pull-request context must identify the individual author; the exact credential and attribution strategy remains an architectural decision.
+
 ## Version history
 
 Sakka should leverage Git history rather than introduce a proprietary revision system unless a strong future requirement justifies one.

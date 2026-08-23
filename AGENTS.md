@@ -242,10 +242,7 @@ These require investigation and, where appropriate, an ADR.
 
 ## Concurrency
 
-* SHA-based version detection
-* optimistic concurrency
-* merge conflicts
-* conflict resolution UX
+For individual file saves, the MVP uses the GitHub Contents file SHA captured with the exact working branch at open time. The save must include that SHA. A `409 Conflict` is a stale write: do not retry automatically, overwrite newer source, or auto-merge. Preserve unsaved browser source, fetch the current version, and offer an explicit reload/copy path. Three-way merge, cross-file atomic saves, and full conflict-resolution UX remain open questions.
 
 ## Preview
 

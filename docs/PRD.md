@@ -553,20 +553,17 @@ Future UI may expose:
 
 ## 8.14 Conflict detection
 
-**Status: REQUIRED**
+**Status: DECIDED for MVP**
 
 Sakka must detect when content has changed since the author began editing.
 
-At minimum, the system should avoid blindly overwriting newer content.
+For an individual file save, Sakka captures the GitHub Contents file SHA and exact working branch when the author opens the file. It supplies that SHA when saving.
 
-Potential mechanisms include:
+If GitHub reports a stale version (`409 Conflict`), Sakka must not retry automatically, overwrite the newer source, or perform an automatic merge. It preserves the author's unsaved source in the current browser session, fetches the current repository version, and offers an explicit reload path (and, where available, a safe copy of unsaved source).
 
-* blob SHA
-* commit SHA
-* ETag-style version identifier
-* compare-before-write
+Automatic three-way merging, cross-file atomic saves, and a full conflict-resolution UI are deferred.
 
-Conflict resolution UX is an open design question.
+See [ADR 0004](architecture/adr/0004-stale-write-detection-and-conflict-response.md).
 
 ---
 

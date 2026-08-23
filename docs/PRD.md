@@ -470,28 +470,24 @@ MVP scope should be chosen after architecture investigation.
 
 ## 8.10 Drafts
 
-**Status: REQUIRED, storage model OPEN**
+**Status: DECIDED for MVP**
 
 Authors must be able to save unfinished work.
 
-The preferred principle is:
+For the MVP, each article editing session uses one Sakka-generated working branch. The first changed explicit Save creates that branch from the base commit recorded when the author opened the article. Each changed later Save creates one human-attributed commit on that branch; unchanged source creates no commit.
 
-> Draft content should remain compatible with Git ownership.
+The configured publishing base branch is the only permitted target. During dogfood it must be a dedicated non-production branch; promotion to `main` requires an explicit later decision.
 
-Possible strategies:
+Sakka retains minimal branch, version, commit, and PR metadata only for recovery. GitHub remains authoritative for content and history.
 
-* branch per draft
-* branch per author
-* shared drafts branch
-* temporary Sakka storage plus later Git persistence
+See [ADR 0005](architecture/adr/0005-working-branch-save-and-publish-semantics.md).
 
-The initial design should favor Git-native drafts if practical.
 
 ---
 
 ## 8.11 Publishing
 
-**Status: DECIDED conceptually**
+**Status: DECIDED for MVP**
 
 The initial publishing workflow should create a GitHub pull request.
 
@@ -513,7 +509,11 @@ merge
 deploy
 ```
 
-Direct-to-main publishing may be considered later as an optional configuration.
+Publish is separate from Save. It first reconciles an existing open pull request for the working branch and configured base; only when none exists does it create a draft pull request. If PR creation fails after a save, the committed working branch remains recoverable and the next Publish reconciles before retrying. Sakka must not create a duplicate content commit.
+
+Working branches remain after PR creation or merge; cleanup is manual in the MVP. Direct-to-main publishing may be considered later as an optional configuration.
+
+See [ADR 0005](architecture/adr/0005-working-branch-save-and-publish-semantics.md).
 
 ### Author attribution
 

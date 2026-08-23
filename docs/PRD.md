@@ -565,9 +565,19 @@ Automatic three-way merging, cross-file atomic saves, and a full conflict-resolu
 
 See [ADR 0004](architecture/adr/0004-stale-write-detection-and-conflict-response.md).
 
+## 8.15 Application boundaries
+
+**Status: DECIDED for MVP**
+
+The application uses a narrow Sakka core for validation, source-first workflow rules, domain models, typed errors, and minimal draft-operation state. A GitHub adapter owns GitHub API calls and maps provider responses into stable application results and error categories.
+
+Postgres may retain session/OAuth state and minimal operation/audit metadata, but never becomes an authoritative content or revision store. The browser never receives GitHub credentials or raw provider errors.
+
+See [ADR 0006](architecture/adr/0006-mvp-core-and-github-adapter-boundary.md).
+
 ---
 
-## 8.15 Media/assets
+## 8.16 Media/assets
 
 **Status: REQUIRED eventually, MVP depth OPEN**
 

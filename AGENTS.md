@@ -270,6 +270,12 @@ For individual file saves, the MVP uses the GitHub Contents file SHA captured wi
 * CLI
 * adapters
 
+## MVP application boundary
+
+The MVP uses a narrow Sakka core and one GitHub repository adapter. The core owns configuration/path/branch validation, source-first workflow rules, stable domain models and errors, and minimal draft-operation state. The GitHub adapter owns server-side GitHub API calls and provider-specific mapping. Do not expose raw GitHub responses to UI code or build a generalized provider/plugin system before the workflow demands it.
+
+Stable author-facing error categories are `unauthenticated`, `unauthorized`, `misconfigured`, `not_found`, `validation`, `conflict`, `rate_limited`, and `transient`. Postgres may retain opaque auth state and minimal operation/audit metadata but must never become the authoritative source for content, revisions, or routine content diffs.
+
 ---
 
 # Decision protocol

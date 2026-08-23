@@ -235,7 +235,7 @@ These require investigation and, where appropriate, an ADR.
 
 ## Drafts
 
-The MVP uses one server-generated working branch per article editing session. The configured publishing base is a dedicated non-production branch during dogfood. The first changed explicit Save creates the working branch from the base commit recorded at open; each changed later explicit Save creates one human-attributed commit. Unchanged source creates no commit. Publish is separate: reconcile an existing draft PR for that working branch and base before creating one. Retain minimal operation metadata for recovery; GitHub remains authoritative. Autosave, shared branches, automatic cleanup, and multi-file/batch semantics remain open.
+The MVP uses one server-generated working branch per article editing session. During dogfood the configured publishing base is `sakka/dogfood`, a dedicated non-production branch. The first changed explicit Save creates the working branch from the base commit recorded at open; each changed later explicit Save creates one human-attributed commit. Unchanged source creates no commit. Publish is separate: reconcile an existing draft PR for that working branch and base before creating one. Retain minimal operation metadata for recovery; GitHub remains authoritative. Autosave, shared branches, automatic cleanup, and multi-file/batch semantics remain open.
 
 ## Concurrency
 

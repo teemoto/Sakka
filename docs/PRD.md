@@ -476,7 +476,7 @@ Authors must be able to save unfinished work.
 
 For the MVP, each article editing session uses one Sakka-generated working branch. The first changed explicit Save creates that branch from the base commit recorded when the author opened the article. Each changed later Save creates one human-attributed commit on that branch; unchanged source creates no commit.
 
-The configured publishing base branch is the only permitted target. During dogfood it must be a dedicated non-production branch; promotion to `main` requires an explicit later decision.
+The configured publishing base branch is the only permitted target. During dogfood it is `sakka/dogfood`, a dedicated non-production branch; promotion to `main` requires an explicit later decision.
 
 Sakka retains minimal branch, version, commit, and PR metadata only for recovery. GitHub remains authoritative for content and history.
 

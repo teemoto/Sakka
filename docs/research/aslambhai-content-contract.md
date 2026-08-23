@@ -77,6 +77,17 @@ The local, disposable GitHub credential spike must prove the following sequence 
 6. Verify the PR source, target, commit identity, and changed path.
 7. Close the PR and delete the working branch after evidence is captured.
 
+## Integrated application dogfood target
+
+The disposable Phase 0 branch above was only for the credential spike. The first integrated Sakka application slice uses a separate, durable non-production publishing base:
+
+- Base branch: `sakka/dogfood`
+- Created: 2026-08-23
+- Initialized from `main` commit: `114a2c2bdd364d669ad1aeb16d8c8d3b33efc707`
+- Deployment effect: none; the deployment workflow remains limited to pushes to `main`
+
+Sakka-created article working branches will target `sakka/dogfood` with draft pull requests. Do not change this base to `main` until the integrated dogfood workflow has been deliberately assessed and a new decision records the promotion.
+
 ## Rollback
 
 Before any commit exists, deleting the working branch fully removes the Phase 0 test target.

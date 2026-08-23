@@ -18,7 +18,7 @@ The MVP uses **one server-generated working branch per article editing session**
 ### Base and working branches
 
 - Sakka configuration supplies exactly one publishing base branch.
-- During dogfood, that base branch is a dedicated non-production branch. Its name is deployment configuration, not browser-controlled input.
+- During dogfood, that base branch is the dedicated non-production branch `sakka/dogfood`. It is deployment configuration, not browser-controlled input.
 - When an author opens an article, Sakka records the base branch, its tip commit SHA, and the article's file SHA.
 - On the first changed explicit save, Sakka creates a server-generated working branch from the recorded base commit. A branch name includes a Sakka prefix, a normalized authenticated-author identifier, a normalized article slug, and a collision-resistant suffix.
 - The branch belongs to that one article/editing session. Sakka does not share a working branch across articles in the MVP.
@@ -89,7 +89,7 @@ The server records only the operation metadata needed for recovery: configured r
 
 ## Explicitly not decided here
 
-- The exact dedicated dogfood base-branch name and its promotion process to `main`.
+- The promotion process from `sakka/dogfood` to `main`.
 - Resume, abandon, or branch-cleanup UX beyond manual GitHub cleanup.
 - Autosave, batch/multi-file saves, and cross-article PRs.
 - Automatic PR merge, post-merge deployment status, or review/check UI.
@@ -97,7 +97,7 @@ The server records only the operation metadata needed for recovery: configured r
 
 ## Follow-up work
 
-1. Create and document the dedicated non-production base branch before the first integrated application test.
+1. Keep `sakka/dogfood` current as the dedicated non-production base branch before integrated application tests.
 2. Define the persisted operation/session model and typed GitHub adapter errors.
 3. Test branch-name collision, changed base branch, no-op save, lost PR-response, and duplicate-PR reconciliation behavior.
 4. Implement the smallest vertical slice: list one article, edit source, explicit save, then create/reconcile a draft PR.
@@ -109,4 +109,3 @@ The server records only the operation metadata needed for recovery: configured r
 - [GitHub publish recovery spike](../../research/github-publish-recovery-spike.md)
 - [Stale-write detection ADR](0004-stale-write-detection-and-conflict-response.md)
 - [Source-first content fidelity ADR](0003-source-first-content-fidelity.md)
-

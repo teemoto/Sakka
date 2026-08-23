@@ -16,9 +16,9 @@ Sakka is being built in the open and dogfooded on a real publishing site before 
 
 ## Status
 
-Early development.
+Early development. The application foundation is in place; the next increment is the first authenticated authoring-to-Git workflow.
 
-The current focus is product definition, architecture, and proving the core authoring-to-Git workflow.
+The current focus is proving that workflow safely against the Aslam Bhai dogfood repository's non-production base branch.
 
 ## Core idea
 
@@ -85,6 +85,8 @@ AI-assisted development guidelines live in:
 `AGENTS.md`
 
 Architecture decisions are recorded as ADRs in `docs/architecture/adr/`.
+
+Local setup and verification commands are in [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
 
 ## License
 

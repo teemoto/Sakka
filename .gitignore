@@ -1,3 +1,12 @@
 # Local planning document; intentionally not versioned.
 docs/PROJECT_TRACKER.md
 docs/BUILD_JOURNAL.md
+
+# Generated application files and local secrets.
+node_modules/
+.next/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
